@@ -4,9 +4,9 @@ import React from 'react';
 
 const Page = () => {
   return (
-    <section className='h-screen w-screen platform grid grid-cols-7 grid-rows-1 bg-green-400'>
-      <VideoPanel/>
-      <SidePanel/>
+    <section className='bg-gray-200 p-3 h-screen w-screen platform grid gap-3 grid-cols-7 grid-rows-1'>
+      <VideoPanel isTeacher={false} />
+      <SidePanel />
     </section>
   );
 };

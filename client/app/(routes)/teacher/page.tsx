@@ -1,0 +1,14 @@
+import { SidePanel } from '@/app/_components/SidePanel/SidePanel';
+import { VideoPanel } from '@/app/_components/VideoPanel/VideoPanel';
+import React from 'react';
+
+const Page = () => {
+  return (
+    <section className='h-screen w-screen overflow-hidden p-4 gap-4 platform grid grid-cols-7 grid-rows-1 bg-gray-200'>
+      <VideoPanel isTeacher={true}/>
+      <SidePanel/>
+    </section>
+  );
+};
+
+export default Page;

@@ -10,7 +10,6 @@ export const TopBar = () => {
     useEffect(() => {
         const timer = () => {
             const now = moment().format('LLLL');
-            console.log(now);
             setDate({
                 ...date,
                 date: `${moment().format('dddd')}  ${moment().format("MMM Do YY")}`,
@@ -19,10 +18,10 @@ export const TopBar = () => {
         };
         timer();
         setInterval(timer, 10000);
-    }, []);
+    });
 
     return (
-        <section className='min-h-[10vh] w-full px-6 py-4 flex justify-between'>
+        <section className='bg-gray-50 w-full p-3 flex justify-between'>
             <div className="details h-full flex flex-col justify-start">
                 <h3 className='text-sm font-semibold text-gray-500 sans uppercase'>
                     {`${date.date}`}
@@ -31,7 +30,7 @@ export const TopBar = () => {
                     Annual Plan Meeting
                 </h1>
             </div>
-            <div className='h-full flex items-center'>
+            <div className='h-full flex items-end'>
                 <span className="time-badge text-3xl text-gray-700 font-semibold">
                     {date.time}
                 </span>

@@ -1,12 +1,11 @@
-import React from 'react'
+import React from 'react';
 import { TopBar } from '../TopBar/TopBar';
 import Whiteboard from '../Whiteboard/Whiteboard';
 
-export const VideoPanel = () => {
+export const VideoPanel = ({ isTeacher }: { isTeacher: boolean; }) => {
   return (
-    <section className='h-full w-full bg-gray-100 border-r-2 border-gray-300 col-span-5 flex flex-col justify-start items-start'>
-        <TopBar/>
-        <Whiteboard/>
+    <section className='h-full w-full col-span-5 flex flex-col justify-start items-start shadow-md'>
+      <Whiteboard isTeacher={isTeacher} />
     </section>
-  )
-}
+  );
+};
