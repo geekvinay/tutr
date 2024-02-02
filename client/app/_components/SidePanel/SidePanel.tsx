@@ -21,7 +21,7 @@ export const SidePanel = () => {
   );
 
   useEffect(() => {
-    socket = io("192.168.2.3:8001");
+    socket = io("http://localhost:8001");
 
     socket.on("message-receive", (data: any) => {
       setMessArr([data]);

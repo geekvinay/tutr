@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 import {  } from '@mui/icons-material';
 import PenTools from '../PenTools/PenTools';
 import { DragOptions, useDraggable } from '@neodrag/react';
-const socket = io('192.168.2.3:8001');
+const socket = io('http://localhost:8001');
 
 
 const Whiteboard = ({ isTeacher }: { isTeacher: boolean; }) => {
