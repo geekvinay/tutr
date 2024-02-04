@@ -5,7 +5,7 @@ import { fabric } from 'fabric';
 import { penToolTip } from '@/app/_utils/enums';
 import { Button } from '@mui/material';
 
-const Whiteboard = ({ isTeacher }: { isTeacher: boolean; }) => {
+const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: any }) => {
     const canvasRef: any = useRef("");
     const canvasPar: any = useRef("");
     const [penTools, setPenTools] = useState(
@@ -15,34 +15,66 @@ const Whiteboard = ({ isTeacher }: { isTeacher: boolean; }) => {
             tipSize: 3
         }
     );
-    let canvas = useRef() as any;
+    const myCanvas = useRef() as any;
 
     useEffect(() => {
         if (!canvasRef) return;
-        console.log(canvasPar);
+        myCanvas.current = new fabric.Canvas(
+            canvasRef.current,
+            {
+                isDrawingMode: true,
+                height: canvasPar.current.clientHeight - 24,
+                width: canvasPar.current.clientWidth - 24,  
+                defaultCursor: "grab",
+            }
+        );
+        myCanvas.current.freeDrawingBrush.width = 3;
+        myCanvas.current.freeDrawingBrush.color = "0e0e0e";
 
-        canvas.current = new fabric.Canvas(canvasRef.current, {
-            isDrawingMode: true,
-            height: canvasPar.current.clientHeight - 24,
-            width: canvasPar.current.clientWidth - 24,
-        });
+        const handleMouseDown = (options: any) => {
+            console.log("Mouse Down:", options.e.clientX, options.e.clientY);
+        };
 
-        canvas.current.freeDrawingBrush.width = penTools.tipSize;
-        canvas.current.freeDrawingBrush.color = penTools.tipColor;
+        const handleMouseUp = (options: any) => {
+            console.log("Mouse Up:", options.e.clientX, options.e.clientY);
+        };
+
+        const handleObjectModified = (event: any) => {
+            const modifiedObject = event.target;
+            console.log("Object Modified:", modifiedObject.path);
+            // Access the modified object (path, text, etc.) here
+        };
+
+        myCanvas.current.on('mouse:down', handleMouseDown);
+        myCanvas.current.on('mouse:up', handleMouseUp);
+        myCanvas.current.on('object:added', handleObjectModified);
+
 
         return () => {
-            canvas.current.dispose();
+            myCanvas.current.dispose();
         };
-    }, [penTools]);
+    });
+
+
 
     function setTipAsEraser() {
-        canvas.current.freeDrawingBrush.width = 15;
-        canvas.current.freeDrawingBrush.color = "white";
+        // setPenTools({
+        //     penTip: penToolTip.ERASER,
+        //     tipColor: "white",
+        //     tipSize: 15
+        // })
+        myCanvas.current.freeDrawingBrush.width = 10;
+        myCanvas.current.freeDrawingBrush.color = "#FFFFFF";
     }
 
     function setTipAsPencil() {
-        canvas.current.freeDrawingBrush.width = penTools.tipSize;
-        canvas.current.freeDrawingBrush.color = penTools.tipColor;
+        // setPenTools({
+        //     penTip: penToolTip.PEN,
+        //     tipColor: "#0E0E0E",
+        //     tipSize: 3
+        // });
+        myCanvas.current.freeDrawingBrush.width = 3;
+        myCanvas.current.freeDrawingBrush.color = "0E0E0E";
     }
 
 
