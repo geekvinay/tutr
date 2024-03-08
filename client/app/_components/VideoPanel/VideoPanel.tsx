@@ -17,3 +17,4 @@ export const VideoPanel = ({ isTeacher, socket }: { isTeacher: boolean; socket: 
     </section >
   );
 };
+

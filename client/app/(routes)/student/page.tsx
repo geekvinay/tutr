@@ -5,14 +5,13 @@ import socketSerivce from '@/app/_services/socketService';
 import React from 'react';
 
 const Page = () => {
-  const socket = new socketSerivce();
+  const socket = new socketSerivce("room1234");
   socket.joinRoom("this room");
-  socket.sendToRoom("this room", "chats", "This is a message");
 
   return (
     <section className='bg-gray-200 p-3 h-screen w-screen platform grid gap-3 grid-cols-7 grid-rows-1'>
       <VideoPanel isTeacher={false} socket={socket} />
-      <SidePanel />
+      <SidePanel socket={socket}/>
     </section>
   );
 };

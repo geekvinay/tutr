@@ -1,12 +1,13 @@
 "use client";
 import { Fab, InputBase, Paper } from '@mui/material';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Send } from '@mui/icons-material';
 import Message from "../ChatBlob/index";
 import { nanoid } from 'nanoid';
+import socketSerivce from '@/app/_services/socketService';
 
-export const SidePanel = () => {
+export const SidePanel = ({ socket }: { socket: socketSerivce; }) => {
   const [messArr, setMessArr] = useState(
     [
       {
@@ -16,6 +17,12 @@ export const SidePanel = () => {
       },
     ]
   );
+  const [mess, setMess] = useState("");
+
+  const sendMessage = async () => {
+    socket.sendToRoom(mess);
+    setMess("");
+  };
 
   return (
     <section className=" col-span-2 h-full w-full flex items-center justify-center shadow-md rounded-md">
@@ -42,15 +49,18 @@ export const SidePanel = () => {
           }
           onSubmit={(e) => {
             e.preventDefault();
+            sendMessage();
           }}
         >
           <InputBase
             placeholder="Message"
             id="outlined-start-adornment"
             sx={{ width: "80%" }}
-            onChange={(e) => console.log(e)}
+            onChange={(e) => {
+              setMess(e.target.value);
+            }}
           />
-          <Fab color='info' aria-label="add" size='medium' sx={{ boxShadow: 'none', borderRadius: '0.4rem', margi: "2px" }}>
+          <Fab color='info' aria-label="add" size='medium' sx={{ boxShadow: 'none', borderRadius: '0.4rem', margin: "2px" }} onClick={sendMessage}>
             <Send />
           </Fab>
         </Paper>

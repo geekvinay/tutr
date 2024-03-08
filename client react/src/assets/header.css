@@ -1,0 +1,8 @@
+header ul li{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+li.border-right{
+    @apply border-r-[2px] border-dashed border-gray-400;
+}

@@ -4,8 +4,9 @@ import PenTools from '../PenTools/PenTools';
 import { fabric } from 'fabric';
 import { penToolTip } from '@/app/_utils/enums';
 import { Button } from '@mui/material';
+import socketSerivce from '@/app/_services/socketService';
 
-const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: any }) => {
+const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: socketSerivce }) => {
     const canvasRef: any = useRef("");
     const canvasPar: any = useRef("");
     const [penTools, setPenTools] = useState(
@@ -18,6 +19,10 @@ const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: any }) 
     const myCanvas = useRef() as any;
 
     useEffect(() => {
+        socket.socket.on("sendMessage", (mess)=>{
+            console.log("received mess : ", mess);
+        })
+
         if (!canvasRef) return;
         myCanvas.current = new fabric.Canvas(
             canvasRef.current,
@@ -36,13 +41,14 @@ const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: any }) 
         };
 
         const handleMouseUp = (options: any) => {
+
             console.log("Mouse Up:", options.e.clientX, options.e.clientY);
         };
 
         const handleObjectModified = (event: any) => {
             const modifiedObject = event.target;
             console.log("Object Modified:", modifiedObject.path);
-            // Access the modified object (path, text, etc.) here
+            socket.sendToRoom(JSON.stringify(modifiedObject));
         };
 
         myCanvas.current.on('mouse:down', handleMouseDown);
@@ -55,24 +61,12 @@ const Whiteboard = ({ isTeacher, socket }: { isTeacher: boolean; socket: any }) 
         };
     });
 
-
-
     function setTipAsEraser() {
-        // setPenTools({
-        //     penTip: penToolTip.ERASER,
-        //     tipColor: "white",
-        //     tipSize: 15
-        // })
         myCanvas.current.freeDrawingBrush.width = 10;
         myCanvas.current.freeDrawingBrush.color = "#FFFFFF";
     }
 
     function setTipAsPencil() {
-        // setPenTools({
-        //     penTip: penToolTip.PEN,
-        //     tipColor: "#0E0E0E",
-        //     tipSize: 3
-        // });
         myCanvas.current.freeDrawingBrush.width = 3;
         myCanvas.current.freeDrawingBrush.color = "0E0E0E";
     }
